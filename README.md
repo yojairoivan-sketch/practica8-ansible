@@ -9,7 +9,7 @@ Se crean **5 servidores Ubuntu** con Docker (cada uno con servidor SSH y el usua
 ├── Dockerfile            # Ubuntu 24.04 + openssh-server + usuario ansible (clave ansible, sudo sin contraseña)
 ├── docker-compose.yml    # 5 servicios: servidor1 ... servidor5
 ├── inventario.ini        # Servidores, IP/puerto, usuario y clave
-├── ansible.cfg           # Usa inventario.ini e ignora la verificación de la clave SSH
+├── ansible.cfg           # Usa inventario.ini e ignora la verificación de la clave SSH (host_key_checking)
 └── playbooks/
     ├── ping.yml          # Prueba de conexión
     ├── configurar.yml    # Tareas de la práctica
@@ -62,6 +62,8 @@ Con Docker Desktop en Windows, WSL no llega a las IPs internas de los contenedor
    ```
 
    > Si el proyecto está en una carpeta de Windows (`/mnt/c/...`), Ansible ignora el `ansible.cfg` por permisos ("world writable directory"). Se soluciona indicándolo así: `ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ...`.
+
+   Las claves SSH de los servidores cambian cada vez que se reconstruyen; por eso `ansible.cfg` y el inventario le dicen a SSH que no las guarde ni las compare (si no, saldría *REMOTE HOST IDENTIFICATION HAS CHANGED*).
 
 4. Apagar los servidores:
 
