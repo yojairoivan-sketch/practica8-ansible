@@ -1,0 +1,19 @@
+---
+- name: Verificar el resultado en cada servidor
+  hosts: servidores
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Leer hola.txt y probar cowsay y htop
+      ansible.builtin.shell: |
+        set -e
+        id itla
+        cat /home/itla/app/hola.txt
+        /usr/games/cowsay "Hola desde {{ inventory_hostname }}"
+        htop --version
+      register: salida
+      changed_when: false
+
+    - name: Mostrar resultado
+      ansible.builtin.debug:
+        var: salida.stdout_lines
